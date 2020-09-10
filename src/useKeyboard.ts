@@ -15,6 +15,7 @@ const initialValue = {
 export function useKeyboard() {
   const [shown, setShown] = useState(false)
   const [keyboardWillShow, setKeyboardWillShow] = useState(false)
+  const [keyboardWillHide, setKeyboardWillHide] = useState(false)
 
   const [coordinates, setCoordinates] = useState<{
     start: ScreenRect
@@ -33,10 +34,12 @@ export function useKeyboard() {
     setKeyboardWillShow(false)
   }
   const handleKeyboardWillHide: KeyboardEventListener = (e) => {
+    setKeyboardWillHide(true)
     setCoordinates({start: e.startCoordinates, end: e.endCoordinates})
   }
   const handleKeyboardDidHide: KeyboardEventListener = (e) => {
     setShown(false)
+    setKeyboardWillHide(false)
     if (e) {
       setCoordinates({start: e.startCoordinates, end: e.endCoordinates})
     } else {
@@ -62,6 +65,7 @@ export function useKeyboard() {
   return {
     keyboardShown: shown,
     keyboardWillShow,
+    keyboardWillHide,
     coordinates,
     keyboardHeight,
   }
